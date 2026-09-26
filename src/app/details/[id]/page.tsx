@@ -1,9 +1,13 @@
 import Savebtn from "@/components/TaskBtn/Savebtn";
 import TodaysBtn from "@/components/TaskBtn/TodaysBtn";
+import { ITaskType } from "@/types/DataType";
 import Image from "next/image";
-import { GiSupersonicArrow } from "react-icons/gi";
 
-const getWorkoutData = async (id) => {
+interface DetailsParams {
+    id: string;
+}
+
+const getWorkoutData = async (id: string): Promise<ITaskType> => {
     const res = await fetch(
         `https://api.abcz.workers.dev/api/fitlog/${id}`
     );
@@ -15,18 +19,18 @@ const getWorkoutData = async (id) => {
     return res.json();
 };
 
-const Details = async ({ params }) => {
+const Details = async ({ params }: { params: Promise<DetailsParams> }) => {
     const { id } = await params;
 
     const data = await getWorkoutData(id);
 
-    const specs = [
+    const specs: [string, string | number][] = [
         ["EQUIPMENT", data.equipment],
         ["DIFFICULTY", data.difficulty],
         ["SETS", data.sets],
         ["REPS", data.reps],
         ["DURATION", `${data.duration} min`],
-        ["CALORIES", `${data.calories} kcal`],
+        ["CALORIES", `${data.caloriesBurned} kcal`],
         ["RATING", data.rating],
     ];
 
@@ -62,9 +66,9 @@ const Details = async ({ params }) => {
                     </div>
 
                     {/* CATEGORIES */}
-                    {data.category?.length > 0 && (
+                    {data.muscleGroups?.length > 0 && (
                         <div className="mt-4 flex flex-wrap gap-2">
-                            {data.category.map((item) => (
+                            {data.muscleGroups.map((item) => (
                                 <span
                                     key={item}
                                     className="rounded-full bg-[#ccff00] px-3 py-1.5 text-[8px] font-bold uppercase text-black sm:text-[9px]"
@@ -82,8 +86,8 @@ const Details = async ({ params }) => {
                             <div
                                 key={label}
                                 className={`flex min-h-[45px] items-center justify-between gap-4 px-3 py-3 text-[10px] sm:px-4 sm:text-xs ${index !== specs.length - 1
-                                    ? "border-b border-[#24272d]"
-                                    : ""
+                                        ? "border-b border-[#24272d]"
+                                        : ""
                                     }`}
                             >
                                 <span className="shrink-0 font-bold uppercase tracking-wide text-[#8b919c]">
@@ -91,7 +95,6 @@ const Details = async ({ params }) => {
                                 </span>
 
                                 <span className="flex min-w-0 items-center gap-2 text-right text-white">
-                                    
 
                                     <span className="truncate">
                                         {value}

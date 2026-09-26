@@ -1,19 +1,22 @@
+import { ITaskType } from "@/types/DataType";
 import Image from "next/image";
 import Link from "next/link";
 import { FiClock, FiActivity, FiStar } from "react-icons/fi";
 
+interface WorkoutData {
+    data: ITaskType;
+}
 
-const WorkoutCard = ({ data }) => {
+const WorkoutCard = ({ data }: WorkoutData) => {
     return (
-        <Link href={`/details/${data.id}`}>
-            <div className="w-full max-w-[320px] overflow-hidden rounded-xl border border-[#292c32] bg-[#15171c]">
+        <Link href={`/details/${data.id}`} className="block w-full">
+            <div className="w-full overflow-hidden hover:border-gray-200 rounded-xl border border-[#292c32] bg-[#15171c]">
                 {/* Image */}
                 <div className="relative h-[165px] w-full">
                     <Image
                         src={data.image}
                         alt={data.name}
                         fill
-
                         className="object-cover"
                     />
                 </div>
@@ -21,14 +24,15 @@ const WorkoutCard = ({ data }) => {
                 {/* Content */}
                 <div className="p-5">
                     {/* Tags */}
-                    <div className="mb-4 flex gap-2">
-                        <span className="rounded-full bg-[#ccff00] px-3 py-1 font-[var(--font-oswald)] text-[10px] font-bold uppercase text-black">
-                            {data.muscleGroups[0]}
-                        </span>
-
-                        <span className="rounded-full bg-[#ccff00] px-3 py-1 font-[var(--font-oswald)] text-[10px] font-bold uppercase text-black">
-                            {data.muscleGroups[1]}
-                        </span>
+                    <div className="mb-4 flex flex-wrap gap-2">
+                        {data.muscleGroups?.slice(0, 2).map((group) => (
+                            <span
+                                key={group}
+                                className="rounded-full bg-[#ccff00] px-3 py-1 font-[var(--font-oswald)] text-[10px] font-bold uppercase text-black"
+                            >
+                                {group}
+                            </span>
+                        ))}
                     </div>
 
                     {/* Workout Name */}

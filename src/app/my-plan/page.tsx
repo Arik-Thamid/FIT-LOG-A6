@@ -3,15 +3,9 @@
 import { Taskcontext } from "@/context/TaskProvider";
 import Image from "next/image";
 import Link from "next/link";
-import { useContext, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import {
-    FiCheck,
-    FiClock,
-    FiStar,
-    FiX,
-    FiZap
-} from "react-icons/fi";
+import { useContext, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { FiCheck, FiClock, FiStar, FiX, FiZap } from "react-icons/fi";
 import { toast } from "react-toastify";
 
 const MyPlanPage = () => {
@@ -24,24 +18,17 @@ const MyPlanPage = () => {
         setSavedTask
     } = taskData;
 
+    const router = useRouter();
     const searchParams = useSearchParams();
 
     const tabFromUrl = searchParams.get("tab");
 
-    const [activeTab, setActiveTab] = useState(
-        tabFromUrl === "saved" ? "saved" : "today"
-    );
+    const activeTab: "today" | "saved" =
+        tabFromUrl === "saved" ? "saved" : "today";
 
-    const [sortBy, setSortBy] = useState("Duration");
-
-    // URL change হলে active tab update হবে
-    useEffect(() => {
-        if (tabFromUrl === "saved") {
-            setActiveTab("saved");
-        } else {
-            setActiveTab("today");
-        }
-    }, [tabFromUrl]);
+    const [sortBy, setSortBy] = useState<
+        "Duration" | "Calories" | "Rating"
+    >("Duration");
 
     // Which data will show
     const currentTasks =
@@ -96,7 +83,7 @@ const MyPlanPage = () => {
     );
 
     // Mark as done
-    const onDone = (id) => {
+    const onDone = (id: number) => {
         setTodaysTask(
             todaysTask.filter((task) => task.id !== id)
         );
@@ -104,7 +91,7 @@ const MyPlanPage = () => {
         toast.success("Workout completed");
     };
 
-    const onRemove = (id) => {
+    const onRemove = (id: number) => {
         if (activeTab === "today") {
             setTodaysTask(
                 todaysTask.filter((task) => task.id !== id)
@@ -179,20 +166,20 @@ const MyPlanPage = () => {
                     <div className="flex rounded-xl border border-[#24272d] bg-[#14171d] p-1">
 
                         <button
-                            onClick={() => setActiveTab("today")}
+                            onClick={() => router.push("/my-plan?tab=today")}
                             className={`rounded-lg px-4 py-2 text-xs font-medium transition ${activeTab === "today"
-                                ? "bg-[#2a2e36] text-white"
-                                : "text-[#7d8595]"
+                                    ? "bg-[#2a2e36] text-white"
+                                    : "text-[#7d8595]"
                                 }`}
                         >
-                            Today's Plan
+                            Today&apos;s Plan
                         </button>
 
                         <button
-                            onClick={() => setActiveTab("saved")}
+                            onClick={() => router.push("/my-plan?tab=saved")}
                             className={`rounded-lg px-4 py-2 text-xs font-medium transition ${activeTab === "saved"
-                                ? "bg-[#2a2e36] text-white"
-                                : "text-[#7d8595]"
+                                    ? "bg-[#2a2e36] text-white"
+                                    : "text-[#7d8595]"
                                 }`}
                         >
                             Saved
@@ -209,7 +196,12 @@ const MyPlanPage = () => {
                         <select
                             value={sortBy}
                             onChange={(e) =>
-                                setSortBy(e.target.value)
+                                setSortBy(
+                                    e.target.value as
+                                    "Duration" |
+                                    "Calories" |
+                                    "Rating"
+                                )
                             }
                             className="rounded-full border border-[#2b2f37] bg-[#14171d] px-4 py-2 text-xs outline-none"
                         >

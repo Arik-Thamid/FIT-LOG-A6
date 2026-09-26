@@ -1,26 +1,33 @@
-'use client'
-import { createContext, useState } from "react";
+"use client";
 
+import { ITaskType } from "@/types/DataType";
+import { createContext, ReactNode, useState } from "react";
 
-export const Taskcontext = createContext({})
+interface ITaskContext {
+    todaysTask: ITaskType[];
+    savedTask: ITaskType[];
+    setTodaysTask: React.Dispatch<React.SetStateAction<ITaskType[]>>;
+    setSavedTask: React.Dispatch<React.SetStateAction<ITaskType[]>>;
+}
 
-const TaskProvider = ({ children }) => {
+export const Taskcontext = createContext<ITaskContext>(
+    {} as ITaskContext
+);
 
-    const [todaysTask, setTodaysTask] = useState([])
-    const [savedTask, setSavedTask] = useState([]);
+const TaskProvider = ({ children }: { children: ReactNode }) => {
+    const [todaysTask, setTodaysTask] = useState<ITaskType[]>([]);
+    const [savedTask, setSavedTask] = useState<ITaskType[]>([]);
 
     const shareData = {
         todaysTask,
         setTodaysTask,
         savedTask,
-        setSavedTask
-    }
+        setSavedTask,
+    };
 
     return (
         <Taskcontext.Provider value={shareData}>
-
             {children}
-
         </Taskcontext.Provider>
     );
 };

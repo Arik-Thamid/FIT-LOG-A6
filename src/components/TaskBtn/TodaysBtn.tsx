@@ -1,19 +1,20 @@
 'use client'
 import { Taskcontext } from '@/context/TaskProvider';
+import { ITaskType } from '@/types/DataType';
 import React, { useContext } from 'react';
 import { FiPlus } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 
 
 
-const TodaysBtn = ({ data }) => {
+const TodaysBtn = ({ data }: { data: ITaskType }) => {
     const getContext = useContext(Taskcontext)
 
     const { todaysTask, setTodaysTask } = getContext
 
     const isAdded = todaysTask.some((task) => task.id === data.id);
 
-    const btnHandler = (id) => {
+    const btnHandler = (id: ITaskType['id']) => {
 
         const alreadyAdded = todaysTask.some((task) => task.id === id);
         if (alreadyAdded) {

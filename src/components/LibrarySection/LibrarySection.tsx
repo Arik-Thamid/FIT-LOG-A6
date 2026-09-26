@@ -11,6 +11,8 @@ const getWorkoutData = async () => {
     return res.json();
 };
 
+type WorkoutData = Awaited<ReturnType<typeof getWorkoutData>>[number];
+
 const LibrarySection = async () => {
     const allData = await getWorkoutData();
 
@@ -30,7 +32,7 @@ const LibrarySection = async () => {
 
             {/* Workout Cards */}
             <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 lg:gap-6">
-                {allData.map((data, idx) => (
+                {allData.map((data: WorkoutData, idx: number) => (
                     <WorkoutCard
                         key={data.id || idx}
                         data={data}

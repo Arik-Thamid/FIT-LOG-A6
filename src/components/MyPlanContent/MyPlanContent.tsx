@@ -102,7 +102,7 @@ const MyPlanContent = () => {
             );
         }
 
-        toast.success("Workout removed");
+        toast.warning("Workout removed");
     };
 
     return (

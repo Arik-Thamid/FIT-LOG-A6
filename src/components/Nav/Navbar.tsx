@@ -16,7 +16,7 @@ const Navbar = () => {
     const isPlanActive = pathname === "/my-plan";
 
     return (
-        <nav className="w-full border-b border-[#ccff00] bg-[#090a0c]">
+        <nav className="w-full bg-[#090a0c]">
 
             <div className="mx-auto flex min-h-[62px] w-full max-w-[1320px] items-center justify-between gap-3 px-4 py-3 sm:px-6 md:px-8">
 

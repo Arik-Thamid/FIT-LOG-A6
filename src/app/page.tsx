@@ -6,6 +6,7 @@ const page = () => {
     <div className="container mx-auto">
       <BannerSection />
       <LibrarySection />
+      
     </div>
   );
 };
